@@ -1,12 +1,17 @@
 public class DemonKing : BaseEnemy
 {
+    public DemonKing(string name, int hp, int adaptCnt) : base(name, hp, adaptCnt)
+    {
+    }
+    
     protected override void ExecuteBeforeAdapt()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     protected override void ExecuteAfterAdapt()
     {
-        throw new System.NotImplementedException();
+        
     }
+
 }

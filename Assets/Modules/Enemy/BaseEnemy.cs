@@ -1,21 +1,56 @@
 using System;
 using System.Collections;
+using UnityEngine;
 
 public abstract class BaseEnemy : IEnemy
 {
-    private int _hp;
+    public BaseEnemy(string name, int hp, int adaptCnt)
+    {
+        Name = name;
+        HP = hp;
+        _adaptCount = adaptCnt;
+
+        string path = $"{CommonConst.EnemySpritePath}/{GameManager.I.CurEnvName}/{name}";
+        AdaptBeforeSprite = Resources.Load<Sprite>(path);
+        AdaptAfterSprite = Resources.Load<Sprite>($"{path}_Adapted");
+    }
+    
+    #region IEnemy
+    public string Name { get; }
     public int HP
     {
         get => _hp;
         set => _hp = Math.Max(0, value);
     }
-        
-    private bool _isAdapt;
     public bool IsAdapt
     {
         get => _isAdapt;
         set => _isAdapt = value;
     }
+
+    public Sprite AdaptBeforeSprite { get; set; }
+    
+    public Sprite AdaptAfterSprite { get; set; }
+    
+    public IEnumerable Execute()
+    {
+        if (!_isAdapt)
+        {
+            ExecuteBeforeAdapt();
+            TurnCount++;
+        }
+        else
+        {
+            ExecuteAfterAdapt();
+        }
+
+        yield return null;
+    }
+    #endregion
+    
+    private int _hp;
+    
+    private bool _isAdapt;
 
     private int _adaptCount;
     private int _turnCount;
@@ -32,21 +67,6 @@ public abstract class BaseEnemy : IEnemy
                 _turnCount = 0;
             }
         }
-    }
-    
-    public IEnumerable Execute()
-    {
-        if (!_isAdapt)
-        {
-            ExecuteBeforeAdapt();
-            TurnCount++;
-        }
-        else
-        {
-            ExecuteAfterAdapt();
-        }
-
-        yield return null;
     }
 
     protected abstract void ExecuteBeforeAdapt();

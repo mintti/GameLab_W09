@@ -1,5 +1,9 @@
 public class SmallDemon : BaseEnemy
 {
+    public SmallDemon(string name, int hp, int adaptCnt) : base(name, hp, adaptCnt)
+    {
+    }
+    
     protected override void ExecuteBeforeAdapt()
     {
     }
@@ -7,4 +11,5 @@ public class SmallDemon : BaseEnemy
     protected override void ExecuteAfterAdapt()
     {
     }
+
 }

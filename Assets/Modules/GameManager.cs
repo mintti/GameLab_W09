@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Util;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,8 +31,16 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    #region Quick
+
+    public string CurEnvName => ((object)_crackManager.ConnectedEnv).GetType().Name;
+    
+
+    #endregion
     public void ClickStart()
     {
+        _crackManager.Init(ResourceManager.I.Envs[(int) EnvType.SlimeForest]);
         StartCoroutine(GameFlow());
     }
 
@@ -107,12 +114,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 균열 봉쇄
-    /// </summary>
-    public void BlockadeCrack()
+    public void GameClear(string reason)
     {
-        
+        StopCoroutine(GameFlow());
+        Debug.Log($"게임 클리어: {reason}");
     }
 
     #region Util

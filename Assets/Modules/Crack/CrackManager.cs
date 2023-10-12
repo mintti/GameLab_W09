@@ -14,14 +14,14 @@ public class CrackManager
 
             if (_blockadeGauge == 100)
             {
-                GameManager.I.BlockadeCrack();
+                GameManager.I.GameClear("연구를 통한 균열 봉쇄");
             }
         }
     }
 
-    private IEnv _connectedEnv;
+    public IEnv ConnectedEnv { get; private set; }
 
-    private int _monsterIdx;
+    private int _enemyIdx;
     private int _emptyCount;
 
     /// <summary>
@@ -32,8 +32,8 @@ public class CrackManager
     {
         // 환경 설정 애니메이션?
         
-        _monsterIdx = 0;
-        _connectedEnv = env;
+        _enemyIdx = 0;
+        ConnectedEnv = env;
     }
     
     /// <summary>
@@ -43,47 +43,58 @@ public class CrackManager
     {
         _emptyCount++;
 
-        if (_emptyCount == _connectedEnv.MonsterSpawnInterval)
+        if (_emptyCount == ConnectedEnv.EnemySpawnInterval)
         {
-            SpawnMonster();
+            SpawnEnemy();
             _emptyCount = 0;
         }
 
         yield return null;
     }
     
-    private void SpawnMonster()
+    private void SpawnEnemy()
     {
-        if (_monsterIdx <= _connectedEnv.MonsterIdxList.Count)
+        IEnemy enemy = null;
+        if (_enemyIdx <= ConnectedEnv.EnemyTypeList.Count)
         {
-            if (_monsterIdx < _connectedEnv.MonsterIdxList.Count)
+            if (_enemyIdx < ConnectedEnv.EnemyTypeList.Count)
             {
-                int monsterIdx = _connectedEnv.MonsterIdxList[_monsterIdx];
-                // monsterIdx에 해당하는 몬스터 설정
+                var enemyType = ConnectedEnv.EnemyTypeList[_enemyIdx];
+                enemy = ResourceManager.I.GetEnemy(enemyType);
             }
             else
             {
-                // 보스 설정
+                enemy = ResourceManager.I.GetBoss(ConnectedEnv.BossType);
                 // 보스 이펙트?
             }
             
-            // 소환
+            // [TODO] 소환
         }
         else
         {
-            ClearEnv();
+            PurgeCompletedEnv();
         }
     }
 
     /// <summary>
     /// 현재 지정된 환경에서 모든 전투를 끝마침
     /// </summary>
-    private void ClearEnv()
+    private void PurgeCompletedEnv()
     {
-        // 한 레벨 높은 지역 정보 랜덤으로 읽음
-        IEnv nextEnv = null;
+        if (ConnectedEnv.BossType == BossType.DemonKing)
+        {
+            GameManager.I.GameClear("보스를 잡아 균열 봉쇄");
+        }
+        else
+        {
+            int nextLevel = ConnectedEnv.Level + 1;
         
-        // 현재 지역으로 지정
-        Init(nextEnv);
+            // 한 레벨 높은 지역 정보 랜덤으로 지정
+            var envsByLevel = ResourceManager.I.Envs.Where(x => x.Level == nextLevel).ToList();
+            IEnv nextEnv = envsByLevel[UnityEngine.Random.Range(0, envsByLevel.Count)];
+        
+            // 현재 지역으로 지정
+            Init(nextEnv);
+        }
     }
 }
