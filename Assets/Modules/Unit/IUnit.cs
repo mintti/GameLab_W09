@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public enum Class
+public enum ClassType
 {
     Ignore,
     Knight,
@@ -26,7 +26,7 @@ public enum UnitLevel : int
 
 public interface IUnit
 {
-    Class Class { get; set; }
+    ClassType ClassType { get; set; }
     UnitLevel Level { get; set; }
     List<UnitType> HasType { get; set; }
 

@@ -1,5 +1,12 @@
 using System.Collections.Generic;
 
+public enum EnvType : int
+{
+    Ignore,
+    SlimeForest,
+    DevilCastle
+}
+
 public interface IEnv
 {
     /// <summary>

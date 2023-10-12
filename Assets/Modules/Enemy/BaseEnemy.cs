@@ -1,26 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
-public interface IEnemy
-{
-    /// <summary>
-    /// Enemy HP
-    /// </summary>
-    int HP { get; set; }
-    
-    /// <summary>
-    /// 세계에 적응 여부
-    /// </summary>
-    bool IsAdapt { get; set; }
-
-    /// <summary>
-    /// 액션
-    /// </summary>
-    IEnumerable Execute();
-}
-
-public abstract class Enemy : IEnemy
+public abstract class BaseEnemy : IEnemy
 {
     private int _hp;
     public int HP
