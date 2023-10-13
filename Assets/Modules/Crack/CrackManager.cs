@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using System.Linq;
+using UnityEngine;
 
-public class CrackManager
+public class CrackManager : MonoBehaviour
 {
     private float _blockadeGauge;
     public float BlockadeGauge

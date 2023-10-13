@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using UnityEngine;
 
-public class BoardManager
+public class BoardManager : MonoBehaviour
 {
     private ObservableCollection<UITile> Tiles { get; set; }
     public IEnumerable<IUnit> SortedOnUnitTiles => Tiles.Where(x=> x.OnUnit != null).OrderBy(x => x.Index).Select(x=> x.OnUnit);
@@ -22,7 +23,7 @@ public class BoardManager
     private void AddTile()
     {
         
-    }
+    } 
 
 
     private void TradeTile()
