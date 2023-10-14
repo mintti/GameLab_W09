@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     #region Quick
 
     public string CurEnvName => _crackManager.ConnectedEnv.GetType().Name;
-
+    public PlayerController PlayerController => _playerController;
     public UITile CurOnTile => _boardManager.PlayerOnTile;
 
     #endregion

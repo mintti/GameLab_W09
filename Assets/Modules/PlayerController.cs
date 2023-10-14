@@ -36,8 +36,13 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 targetPos)
     {
-        transform.DOMove(targetPos, 1)
+        transform.DOMove(targetPos, .5f)
             .SetEase(_moveEase)
             .OnComplete(() => GameManager.I.Next());
+    }
+
+    public void Rotate(int lineIdx)
+    {
+        transform.DOLocalRotate(new Vector3(0, (lineIdx * 90) % 360, 0), .5f);
     }
 }

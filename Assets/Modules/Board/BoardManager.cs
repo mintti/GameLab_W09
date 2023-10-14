@@ -107,7 +107,9 @@ public class BoardManager : MonoBehaviour
             // 카메라 대상 오브젝트 회전
             if (index % _boardLineCount == 0)
             {
-                SetAngle(index / _boardLineCount);
+                int lineIdx = index / _boardLineCount; 
+                SetAngle(lineIdx);
+                GameManager.I.PlayerController.Rotate(lineIdx);
             }
         }
         
@@ -129,7 +131,7 @@ public class BoardManager : MonoBehaviour
         // 지정 방식
         var angle = _cameraTargetTr.localEulerAngles;
         angle.y = YAngle;
-        _cameraTargetTr.DOLocalRotate(angle, .5f);
+        _cameraTargetTr.DOLocalRotate(angle, .5f) .SetEase(Ease.Linear);
 
         // // 가산 방식
         // var angle = _cameraTargetTr.localEulerAngles;
