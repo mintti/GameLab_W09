@@ -14,6 +14,7 @@ public enum UnitType
 {
     Ignore,
     Battle,
+    Defense,
     Enigma,
     Research
 }
@@ -28,6 +29,7 @@ public enum UnitLevel : int
 
 public interface IUnit
 {
+    UIUnit UIUnit { get; set; }
     ClassType ClassType { get; set; }
     UnitLevel Level { get; set; }
     List<UnitType> HasType { get; set; }
@@ -40,7 +42,7 @@ public interface IUnit
     /// <summary>
     /// 초기화 시 설정
     /// </summary>
-    void Init();
+    void Init(UnitLevel level);
 
     void BattleAction();
 }

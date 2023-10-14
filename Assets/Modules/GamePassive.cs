@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GamePassive :  MonoBehaviour
 {
@@ -58,4 +59,13 @@ public class GamePassive :  MonoBehaviour
     private int _treasureHunterCnt;
     private int _bardCnt;
     
+    
+    [Header("Cost")]
+    [SerializeField] private int _empolyCost;
+    public int EmpolyCost => _empolyCost;
+    [SerializeField] private int _upgradeCost;
+    public int UpgradeCost => _upgradeCost;
+    [SerializeField] private int _changeClassCost;
+    public int ChangeCost => _changeClassCost;
+
 }

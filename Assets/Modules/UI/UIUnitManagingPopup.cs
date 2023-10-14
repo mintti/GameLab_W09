@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class UIUnitManagingPopup : MonoBehaviour
 {
@@ -11,10 +13,12 @@ public class UIUnitManagingPopup : MonoBehaviour
         Change
     }
     
-    [Header("Panel")] 
-    [SerializeField] private GameObject EmptyTileObj;
-    [SerializeField] private GameObject OnUnitTileObj;
-    [SerializeField] private GameObject SelectClassContentTileObj;
+    [Header("[Fix] Panel")] 
+    [SerializeField] private GameObject _emptyTileObj;
+    [SerializeField] private GameObject _onUnitTileObj;
+    [SerializeField] private GameObject _selectClassContentTileObj;
+    [SerializeField] private Button _upgradeBtn;
+    
 
     [Header("Info")]
     [SerializeField] private State _popupState;
@@ -28,33 +32,51 @@ public class UIUnitManagingPopup : MonoBehaviour
         
         if (tile.OnUnit == null)
         {
-            EmptyTileObj.SetActive(true);
+            _emptyTileObj.SetActive(true);
         }
         else
         {
-            OnUnitTileObj.SetActive(true);
+            _onUnitTileObj.SetActive(true);
+            _upgradeBtn.interactable = _curTile.OnUnit.Level < UnitLevel.Three;
         }
+
+        _popupState = tile.OnUnit == null ? State.Empoly : State.Change;
     }
 
     public void B_SelectClass(int typeIdx)
     {
+        bool result = false;
         var type = (ClassType)typeIdx;
         if (_popupState == State.Empoly)
         {
-            _curTile.Collocate(type);
+            if (GameManager.I.CheckCost(GamePassive.I.EmpolyCost))
+            {
+                _curTile.Employ(type);
+                result = true;
+            }
         }
         else if (_popupState == State.Change)
         {
-            _curTile.ChangeClass(type);
+            if (GameManager.I.CheckCost(GamePassive.I.ChangeCost))
+            {
+                _curTile.ChangeClass(type);
+                result = true;
+            }
         }
 
-        EndEvent();
+        if (result)
+        {
+            EndEvent();
+        }
     }
 
     public void B_Upgrade()
     {
-        _curTile.Upgrade();
-        EndEvent();
+        if (GameManager.I.CheckCost(GamePassive.I.UpgradeCost))
+        {
+            _curTile.Upgrade();
+            EndEvent();
+        }
     }
 
     public void B_Destory()
@@ -62,8 +84,7 @@ public class UIUnitManagingPopup : MonoBehaviour
         _curTile.Destroy();
         EndEvent();
     }
-
-
+    
     /// <summary>
     /// 플레이어의 행동을 완료 후 종료
     /// </summary>
@@ -79,9 +100,9 @@ public class UIUnitManagingPopup : MonoBehaviour
     public void B_Close()
     {
         _curTile = null;
-        EmptyTileObj.SetActive(false);
-        OnUnitTileObj.SetActive(false);
-        SelectClassContentTileObj.SetActive(false);
+        _emptyTileObj.SetActive(false);
+        _onUnitTileObj.SetActive(false);
+        _selectClassContentTileObj.SetActive(false);
         gameObject.SetActive(false);
     }
 }

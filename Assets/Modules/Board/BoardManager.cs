@@ -19,7 +19,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private GameObject _tilePrefab;
     private ObservableCollection<UITile> Tiles { get; set; }
     public IEnumerable<IUnit> SortedOnUnitTiles => Tiles.Where(x=> x.OnUnit != null).OrderBy(x => x.Index).Select(x=> x.OnUnit);
-
+    
     
     /// <summary>
     /// 현재 보드에서 한 라인 내 타일 갯수

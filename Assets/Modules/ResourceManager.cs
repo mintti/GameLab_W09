@@ -26,7 +26,9 @@ public class ResourceManager : MonoBehaviour
     private List<Material> _classColorMaterial;
     public List<Material> ClassColorMaterial => _classColorMaterial;
 
-
+    [SerializeField] private GameObject _unitPrefab;
+    public GameObject UnitPrefab => _unitPrefab;
+    
     public List<IEnv> Envs { get; private set; }
 
     public void Init()
@@ -71,9 +73,9 @@ public class ResourceManager : MonoBehaviour
     {
         return type switch
         {
-            ClassType.Knight => new Knight(),
-            ClassType.Wizard => new Wizard(),
-            ClassType.Manager => new Manager(),
+            ClassType.Knight => new Knight(type, new () { UnitType.Battle , UnitType.Defense }),
+            ClassType.Wizard => new Wizard(type, new () { UnitType.Battle ,UnitType.Research }),
+            ClassType.Manager => new Manager(type, new () { UnitType.Enigma ,UnitType.Research}),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

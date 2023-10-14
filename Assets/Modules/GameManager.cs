@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     [Header("Manager & Player")]
     [SerializeField] private PlayerController _playerController;
     [SerializeField]private BoardManager _boardManager;
-    private UnitManager _unitManager;
     [SerializeField]private CrackManager _crackManager;
     
     [Header("Game Flow Variable")]
@@ -40,6 +39,8 @@ public class GameManager : MonoBehaviour
     public PlayerController PlayerController => _playerController;
     public UITile CurOnTile => _boardManager.PlayerOnTile;
 
+    public BoardManager BoardManager => _boardManager;
+
     #endregion
     
     public void B_Start()
@@ -47,7 +48,6 @@ public class GameManager : MonoBehaviour
         // Init Data
         _crackManager.Init(ResourceManager.I.Envs[(int) EnvType.SlimeForest]);
         _boardManager.Init();
-        
         
         // 
         StartCoroutine(GameFlow());
@@ -174,6 +174,15 @@ public class GameManager : MonoBehaviour
         Debug.Log($"게임 클리어: {reason}");
     }
 
+    #region Other
+
+    public void CalculateSynergy()
+    {
+        
+    }
+    
+
+    #endregion
     #region Util
     private bool _next;
     public IEnumerator WaitNext()
@@ -192,4 +201,9 @@ public class GameManager : MonoBehaviour
         return false;
     }
     #endregion
+
+    public bool CheckCost(int expense)
+    {
+        return expense <= _playerController.Enigma;
+    }
 }

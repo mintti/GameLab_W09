@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UITile : MonoBehaviour
@@ -10,23 +11,30 @@ public class UITile : MonoBehaviour
     
     public IUnit OnUnit { get; set; }
 
-    public void Collocate(ClassType type)
+    public void Employ(ClassType type)
     {
-        
+        var obj = Instantiate(ResourceManager.I.UnitPrefab, transform);
+        var unit = ResourceManager.I.GetUnit(type);
+        obj.GetComponent<UIUnit>().Init(unit);
+
+        OnUnit = unit;
+        unit.Init(UnitLevel.One);
     }
 
     public void Upgrade()
     {
-        
+        OnUnit.Level = (UnitLevel)((int)OnUnit.Level + 1);
     }
         
     public void ChangeClass(ClassType type)
     {
-        
+        OnUnit.ClassType = type;
     }
 
     public void Destroy()
     {
-        
+        Destroy(OnUnit.UIUnit.gameObject);
+        OnUnit = null;
+        GameManager.I.CalculateSynergy();
     }
 }
