@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 targetPos)
     {
-        transform.DOMove(targetPos, .5f)
+        transform.DOJump(targetPos, .5f, 1, .5f)
             .SetEase(_moveEase)
             .OnComplete(() => GameManager.I.Next());
     }
