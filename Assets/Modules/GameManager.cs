@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
 {
     [Header("Manager & Player")]
     [SerializeField] private PlayerController _playerController;
-    [SerializeField]private BoardManager _boardManager;
-    [SerializeField]private CrackManager _crackManager;
+    [SerializeField] private BoardManager _boardManager;
+    [SerializeField] private CrackManager _crackManager;
+    [SerializeField] private UIDice _dice;
     
     [Header("Game Flow Variable")]
     private bool _gameEnd;
@@ -132,9 +133,8 @@ public class GameManager : MonoBehaviour
     #endregion
     IEnumerator RollDice()
     {
-        Log("주사위 눈금을 입력해주세요.");
         // 주사위를 굴린다.
-        
+        _dice.Active();
         yield return WaitNext(); // 값을 얻을 때까지 대기
 
         // 플레이어 이동
@@ -247,6 +247,12 @@ public class GameManager : MonoBehaviour
     public void Log(string log)
     {
         Debug.Log(log);
+    }
+    
+    public IEnumerator Timer(int time, Action endAction = null)
+    {
+        yield return new WaitForSeconds(time);
+        endAction?.Invoke();
     }
     #endregion
 
