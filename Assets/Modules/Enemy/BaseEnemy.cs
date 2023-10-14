@@ -31,7 +31,15 @@ public abstract class BaseEnemy : IEnemy
     public int HP
     {
         get => _hp;
-        set => _hp = Math.Max(0, value);
+        set
+        {
+            _hp = Math.Max(0, value);
+            if (_hp == 0)
+            {
+                GameManager.I.KillMonster();
+                Destroy();
+            }
+        }
     }
     
     public bool IsAdapt

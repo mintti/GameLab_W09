@@ -64,19 +64,22 @@ public class CrackManager : MonoBehaviour
             Debug.Log($"{enemy.Name} 출현! ");
             enemy.DisplaySpriteRenderer = enemySpriteRenderer; // 이미지 출력 연결
         }
-        else
-        {
-            // [TODO] 다른 곳에서 해당 함수 실행하도록 이동필요
-            PurgeCompletedEnv();
-        }
 
         return enemy;
     }
 
+    public void CheckPurgeEnv()
+    {
+        if (_enemyIdx == ConnectedEnv.EnemyTypeList.Count)
+        {
+            CompletedPurgeEnv();
+        }
+    }
+    
     /// <summary>
     /// 현재 지정된 환경에서 모든 전투를 끝마침
     /// </summary>
-    private void PurgeCompletedEnv()
+    private void CompletedPurgeEnv()
     {
         if (ConnectedEnv.BossType == BossType.DemonKing)
         {

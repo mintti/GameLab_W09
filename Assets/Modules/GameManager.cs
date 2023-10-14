@@ -182,7 +182,11 @@ public class GameManager : MonoBehaviour
     {
         
     }
-    
+
+    public void KillMonster()
+    {
+        _crackManager.CheckPurgeEnv();
+    }
 
     #endregion
     #region Util
