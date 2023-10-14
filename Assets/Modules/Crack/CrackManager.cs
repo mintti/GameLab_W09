@@ -58,9 +58,9 @@ public class CrackManager : MonoBehaviour
             else
             {
                 enemy = ResourceManager.I.GetBoss(ConnectedEnv.BossType);
-                // 보스 이펙트?
             }
-            
+
+            _enemyIdx ++;
             Debug.Log($"{enemy.Name} 출현! ");
             enemy.DisplaySpriteRenderer = enemySpriteRenderer; // 이미지 출력 연결
         }
@@ -70,7 +70,7 @@ public class CrackManager : MonoBehaviour
 
     public void CheckPurgeEnv()
     {
-        if (_enemyIdx == ConnectedEnv.EnemyTypeList.Count)
+        if (_enemyIdx == ConnectedEnv.EnemyTypeList.Count + 1)
         {
             CompletedPurgeEnv();
         }
@@ -90,9 +90,10 @@ public class CrackManager : MonoBehaviour
             int nextLevel = ConnectedEnv.Level + 1;
         
             // 한 레벨 높은 지역 정보 랜덤으로 지정
-            var envsByLevel = ResourceManager.I.Envs.Where(x => x.Level == nextLevel).ToList();
+            var envsByLevel = ResourceManager.I.Envs.Where(x => x?.Level == nextLevel).ToList();
             IEnv nextEnv = envsByLevel[UnityEngine.Random.Range(0, envsByLevel.Count)];
         
+            Debug.Log($"새로운 지역으로 연결");
             // 현재 지역으로 지정
             Init(nextEnv);
         }

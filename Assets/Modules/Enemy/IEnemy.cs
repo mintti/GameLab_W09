@@ -3,7 +3,6 @@ using UnityEngine;
 
 public interface IEnemy
 {
-    SpriteRenderer DisplaySpriteRenderer { set; }
     
     string Name { get; }
     
@@ -21,10 +20,14 @@ public interface IEnemy
     
     Sprite AdaptAfterSprite { get; set; }
     
+    SpriteRenderer DisplaySpriteRenderer { set; }
+    
     /// <summary>
     /// 액션
     /// </summary>
     IEnumerator Execute();
 
     public void Destroy();
+
+    public void Hit(int damage);
 }

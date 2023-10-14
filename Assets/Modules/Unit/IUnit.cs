@@ -44,6 +44,6 @@ public interface IUnit
     /// </summary>
     void Init(UnitLevel level);
 
-    void BattleAction();
+    void BattleAction(IEnemy enemy);
 }
 

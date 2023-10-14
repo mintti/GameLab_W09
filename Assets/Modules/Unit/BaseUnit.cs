@@ -1,8 +1,15 @@
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class BaseUnit : IUnit
 {
+    public BaseUnit(ClassType type, List<UnitType> hasType)
+    {
+        _classType = type;
+        _hasType = hasType;
+    }
+    
     public UIUnit UIUnit { get; set; }
 
     protected ClassType _classType;
@@ -39,20 +46,24 @@ public class BaseUnit : IUnit
     }
     
     public int CycleExpense { get; set; }
-
-    public BaseUnit(ClassType type, List<UnitType> hasType)
-    {
-        _classType = type;
-        _hasType = hasType;
-    }
     
     public void Init(UnitLevel level)
     {
         Level = level;
         UIUnit.ChangedLevel(_level);
+        UpdateStatus();
     }
 
-    public virtual void BattleAction()
+    /// <summary>
+    /// 호출 시 Where절로 인해, Battle 특성을 가진 유닛에서만 호출됨
+    /// </summary>
+    /// <param name="enemy">대상</param>
+    public virtual void BattleAction(IEnemy enemy)
+    {
+        // nothing
+    }
+
+    public virtual void UpdateStatus()
     {
         
     }

@@ -4,17 +4,6 @@ using UnityEngine;
 
 public abstract class BaseEnemy : IEnemy
 {
-    private SpriteRenderer _displaySpriteRenderer;
-    public SpriteRenderer DisplaySpriteRenderer
-    {
-        private get => _displaySpriteRenderer;
-        set
-        {
-            _displaySpriteRenderer = value;
-            _displaySpriteRenderer.sprite = AdaptBeforeSprite;
-        }
-    }
-    
     public BaseEnemy(string name, int hp, int adaptCnt)
     {
         Name = name;
@@ -27,7 +16,9 @@ public abstract class BaseEnemy : IEnemy
     }
     
     #region IEnemy
+    
     public string Name { get; }
+    
     public int HP
     {
         get => _hp;
@@ -50,7 +41,7 @@ public abstract class BaseEnemy : IEnemy
             _isAdapt = value;
             if (_isAdapt)
             {
-                DisplaySpriteRenderer.sprite = AdaptAfterSprite;
+                _displaySpriteRenderer.sprite = AdaptAfterSprite;
             }
         }
     }
@@ -59,6 +50,17 @@ public abstract class BaseEnemy : IEnemy
     
     public Sprite AdaptAfterSprite { get; set; }
     
+    private SpriteRenderer _displaySpriteRenderer;
+    public SpriteRenderer DisplaySpriteRenderer
+    {
+        private get => _displaySpriteRenderer;
+        set
+        {
+            _displaySpriteRenderer = value;
+            _displaySpriteRenderer.sprite = AdaptBeforeSprite;
+        }
+    }
+
     public IEnumerator Execute()
     {
         if (!_isAdapt)
@@ -73,12 +75,25 @@ public abstract class BaseEnemy : IEnemy
 
         yield return null;
     }
+    
+    protected abstract void ExecuteBeforeAdapt();
+    
+    protected abstract void ExecuteAfterAdapt();
+
+    public virtual void Hit(int damage)
+    {
+        HP -= damage;
+    }
+
+    public void Destroy()
+    {
+        _displaySpriteRenderer.sprite = null;
+        _displaySpriteRenderer = null;
+    }
     #endregion
     
     private int _hp;
-    
     private bool _isAdapt;
-
     private int _adaptCount;
     private int _turnCount;
 
@@ -94,15 +109,5 @@ public abstract class BaseEnemy : IEnemy
                 _turnCount = 0;
             }
         }
-    }
-
-    protected abstract void ExecuteBeforeAdapt();
-    
-    protected abstract void ExecuteAfterAdapt();
-
-    public void Destroy()
-    {
-        DisplaySpriteRenderer.sprite = null;
-        DisplaySpriteRenderer = null;
     }
 }

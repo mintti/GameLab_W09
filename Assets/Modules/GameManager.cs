@@ -135,26 +135,24 @@ public class GameManager : MonoBehaviour
             {
                 foreach (var unit in battleUnits)
                 {
-                    unit.BattleAction();
+                    unit.BattleAction(_curEnemy);
+                    
+                    // 전투 종료
+                    if (_curEnemy == null) break;
                 }
             }
             
             // 모든 공격을 끝마치면....
             yield return WaitNext();
-
-            // 적응 상태의 적 -> 성 공격
-            if (_curEnemy.HP > 0)
+            
+            if (_curEnemy != null) 
             {
-                yield return _curEnemy.Execute();
+                // 적응 상태의 적 -> 성 공격
+                if (_curEnemy?.HP > 0)
+                {
+                    yield return _curEnemy.Execute();
+                }
             }
-            else
-            {
-                _curEnemy.Destroy();
-                _curEnemy = null;
-            }
-        
-            // 모든 공격을 끝마치면....
-            yield return WaitNext();
         }
     }
 
@@ -185,6 +183,7 @@ public class GameManager : MonoBehaviour
 
     public void KillMonster()
     {
+        _curEnemy = null;
         _crackManager.CheckPurgeEnv();
     }
 

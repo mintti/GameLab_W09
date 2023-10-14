@@ -67,18 +67,6 @@ public class ResourceManager : MonoBehaviour
         };
     }
     #endregion
-   
-
-    public IUnit GetUnit(ClassType type)
-    {
-        return type switch
-        {
-            ClassType.Knight => new Knight(type, new () { UnitType.Battle , UnitType.Defense }),
-            ClassType.Wizard => new Wizard(type, new () { UnitType.Battle ,UnitType.Research }),
-            ClassType.Manager => new Manager(type, new () { UnitType.Enigma ,UnitType.Research}),
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
-    }
     
     public IEnemy GetEnemy(EnemyType type)
     {
@@ -103,4 +91,42 @@ public class ResourceManager : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
+    
+    #region Unit Info
+    public IUnit GetUnit(ClassType type)
+    {
+        return type switch
+        {
+            ClassType.Knight => new Knight(type, new () { UnitType.Battle , UnitType.Defense }),
+            ClassType.Wizard => new Wizard(type, new () { UnitType.Battle ,UnitType.Research }),
+            ClassType.Manager => new Manager(type, new () { UnitType.Enigma ,UnitType.Research}),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+
+    /// <summary>
+    /// 기사 능력치
+    /// </summary>
+    public (int power, int defense) GetKnightStatus(UnitLevel level)
+        => level switch
+        {
+            UnitLevel.One => (1, 1),
+            UnitLevel.Two => (2, 3),
+            UnitLevel.Three => (3, 7),
+            _ => default
+        };
+
+    /// <summary>
+    /// 마법사 능력치
+    /// </summary>
+    public int GetWizardStatus(UnitLevel level)
+        => level switch
+        {
+            UnitLevel.One => 2,
+            UnitLevel.Two => 4,
+            UnitLevel.Three => 8,
+            _ => default
+        };
+
+    #endregion
 }
