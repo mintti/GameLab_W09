@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     #region Singleton
     public static ResourceManager I;
-
     private void Awake()
     {
         if (I == null)
@@ -20,14 +20,41 @@ public class ResourceManager : MonoBehaviour
     }
     #endregion
 
+    private List<Mesh> _unitMeshByLevel;
+    public List<Mesh> UnitMeshByLevel => _unitMeshByLevel;
+    
+    private List<Material> _classColorMaterial;
+    public List<Material> ClassColorMaterial => _classColorMaterial;
+
 
     public List<IEnv> Envs { get; private set; }
 
     public void Init()
     {
         InitEnv();
+        InitClassData();
     }
 
+    #region Init
+    private void InitClassData()
+    {
+        var meshs = Resources.LoadAll<Mesh>("Unit");
+        _unitMeshByLevel = new()
+        {
+            null,
+            meshs.FirstOrDefault(x=> x.name.Equals("pawn")),
+            meshs.FirstOrDefault(x=> x.name.Equals("bishop")),
+            meshs.FirstOrDefault(x=> x.name.Equals("king")),
+        };
+
+        _classColorMaterial = new();
+        for (int i = 0, cnt = Enum.GetNames(typeof(ClassType)).Length; i < cnt; i++)
+        {
+            string name = ((ClassType)i).ToString();
+            var mater = Resources.Load<Material>($"Unit/{name}/Color");
+            _classColorMaterial.Add(mater);
+        }
+    }
     private void InitEnv()
     {
         Envs = new()
@@ -37,6 +64,8 @@ public class ResourceManager : MonoBehaviour
             new DevilCastle(2, new () { EnemyType.SmallDemon, EnemyType.MediumDemon, EnemyType.LargeDemon}, 2, BossType.DemonKing ),
         };
     }
+    #endregion
+   
 
     public IUnit GetUnit(ClassType type)
     {
