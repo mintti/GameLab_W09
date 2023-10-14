@@ -4,6 +4,17 @@ using UnityEngine;
 
 public abstract class BaseEnemy : IEnemy
 {
+    private SpriteRenderer _displaySpriteRenderer;
+    public SpriteRenderer DisplaySpriteRenderer
+    {
+        private get => _displaySpriteRenderer;
+        set
+        {
+            _displaySpriteRenderer = value;
+            _displaySpriteRenderer.sprite = AdaptBeforeSprite;
+        }
+    }
+    
     public BaseEnemy(string name, int hp, int adaptCnt)
     {
         Name = name;
@@ -22,17 +33,25 @@ public abstract class BaseEnemy : IEnemy
         get => _hp;
         set => _hp = Math.Max(0, value);
     }
+    
     public bool IsAdapt
     {
         get => _isAdapt;
-        set => _isAdapt = value;
+        set
+        {
+            _isAdapt = value;
+            if (_isAdapt)
+            {
+                DisplaySpriteRenderer.sprite = AdaptAfterSprite;
+            }
+        }
     }
 
     public Sprite AdaptBeforeSprite { get; set; }
     
     public Sprite AdaptAfterSprite { get; set; }
     
-    public IEnumerable Execute()
+    public IEnumerator Execute()
     {
         if (!_isAdapt)
         {
@@ -75,6 +94,7 @@ public abstract class BaseEnemy : IEnemy
 
     public void Destroy()
     {
-        
+        DisplaySpriteRenderer.sprite = null;
+        DisplaySpriteRenderer = null;
     }
 }

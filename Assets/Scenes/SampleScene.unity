@@ -6284,7 +6284,7 @@ GameObject:
   - component: {fileID: 1335782374}
   - component: {fileID: 1335782375}
   m_Layer: 0
-  m_Name: Boss
+  m_Name: EnemySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9552,6 +9552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd821ce4d633493893866282c1799bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemySpriteRenderer: {fileID: 1335782375}
 --- !u!1 &2026828671
 GameObject:
   m_ObjectHideFlags: 0

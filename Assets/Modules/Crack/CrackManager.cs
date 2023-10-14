@@ -12,6 +12,9 @@ public class CrackManager : MonoBehaviour
     private int _enemyIdx;
     private int _emptyCount;
 
+    [Header("Enemy")]
+    [SerializeField] private SpriteRenderer enemySpriteRenderer;
+    
     /// <summary>
     /// 균열에 재연결 
     /// </summary>
@@ -27,20 +30,22 @@ public class CrackManager : MonoBehaviour
     /// <summary>
     /// 현재 몬스터가 생성되지 않은 상태이면 게임 매니저에서 호출된다
     /// </summary>
-    public IEnumerable Execute()
+    public IEnemy Execute()
     {
+        IEnemy enemy = null;
+        // [TODO] 보스 몹 잡은 이후, 봉쇄하도록 설정 필요
         _emptyCount++;
 
         if (_emptyCount == ConnectedEnv.EnemySpawnInterval)
         {
-            SpawnEnemy();
+            enemy = SpawnEnemy();
             _emptyCount = 0;
         }
 
-        yield return null;
+        return enemy;
     }
     
-    private void SpawnEnemy()
+    private IEnemy SpawnEnemy()
     {
         IEnemy enemy = null;
         if (_enemyIdx <= ConnectedEnv.EnemyTypeList.Count)
@@ -56,12 +61,16 @@ public class CrackManager : MonoBehaviour
                 // 보스 이펙트?
             }
             
-            // [TODO] 소환
+            Debug.Log($"{enemy.Name} 출현! ");
+            enemy.DisplaySpriteRenderer = enemySpriteRenderer; // 이미지 출력 연결
         }
         else
         {
+            // [TODO] 다른 곳에서 해당 함수 실행하도록 이동필요
             PurgeCompletedEnv();
         }
+
+        return enemy;
     }
 
     /// <summary>

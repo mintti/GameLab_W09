@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     
     [Header("Game Flow Variable")]
     private bool _gameEnd;
-    private BaseEnemy _curBaseEnemy;
+    private IEnemy _curEnemy;
 
     #region Singleton
     public static GameManager I { get; private set; }
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
     
     IEnumerator BattleEvent()
     {
-        if (_curBaseEnemy != null)
+        if (_curEnemy != null)
         {
             Debug.Log("적이 존재하여 전투 시작");
             // 전투 용병 체크 후 공격
@@ -143,14 +143,14 @@ public class GameManager : MonoBehaviour
             yield return WaitNext();
 
             // 적응 상태의 적 -> 성 공격
-            if (_curBaseEnemy.HP > 0)
+            if (_curEnemy.HP > 0)
             {
-                yield return _curBaseEnemy.Execute();
+                yield return _curEnemy.Execute();
             }
             else
             {
-                _curBaseEnemy.Destroy();
-                _curBaseEnemy = null;
+                _curEnemy.Destroy();
+                _curEnemy = null;
             }
         
             // 모든 공격을 끝마치면....
@@ -161,11 +161,13 @@ public class GameManager : MonoBehaviour
     IEnumerator CrackEvent()
     {
         // 몬스터가 존재하지 않을 때, 크랙 이벤트 수행
-        if (_curBaseEnemy == null)
+        if (_curEnemy == null)
         {
             Debug.Log("균열 내 몬스터가 미존해야하여 균열 행동");
-            yield return _crackManager.Execute();
+            _curEnemy = _crackManager.Execute();
         }
+
+        yield return null;
     }
 
     public void GameClear(string reason)
