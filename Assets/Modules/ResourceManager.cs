@@ -11,6 +11,7 @@ public class ResourceManager : MonoBehaviour
         if (I == null)
         {
             I = this;
+            Init();
         }
         else
         {
@@ -24,7 +25,7 @@ public class ResourceManager : MonoBehaviour
 
     public void Init()
     {
-        
+        InitEnv();
     }
 
     private void InitEnv()

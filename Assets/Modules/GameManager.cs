@@ -40,7 +40,10 @@ public class GameManager : MonoBehaviour
     #endregion
     public void ClickStart()
     {
+        // Init Data
         _crackManager.Init(ResourceManager.I.Envs[(int) EnvType.SlimeForest]);
+
+        // 
         StartCoroutine(GameFlow());
     }
 

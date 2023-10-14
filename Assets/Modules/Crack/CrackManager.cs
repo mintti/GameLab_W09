@@ -5,21 +5,8 @@ using UnityEngine;
 
 public class CrackManager : MonoBehaviour
 {
-    private float _blockadeGauge;
-    public float BlockadeGauge
-    {
-        get => _blockadeGauge;
-        set
-        {
-            _blockadeGauge = Math.Min(value, 100f);
-
-            if (_blockadeGauge == 100)
-            {
-                GameManager.I.GameClear("연구를 통한 균열 봉쇄");
-            }
-        }
-    }
-
+    public float BlockadeGauge => GamePassive.I.BlockadeGauge;
+    
     public IEnv ConnectedEnv { get; private set; }
 
     private int _enemyIdx;

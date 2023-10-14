@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 
-public enum ClassType
+public enum ClassType : int
 {
-    Ignore,
+    Ignore = 0,
     Knight,
     Wizard,
-    Manager
+    Manager,
+    TreasureHunter,
+    Bard
 }
 
 public enum UnitType
