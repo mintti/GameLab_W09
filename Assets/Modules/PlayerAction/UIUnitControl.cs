@@ -12,7 +12,7 @@ public class UIUnitControl : IPlayerAction
     }
     #endregion
 
-    public void Hire(UnitType type)
+    public void Employ(UnitType type)
     {
         
     }

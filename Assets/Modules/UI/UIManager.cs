@@ -45,7 +45,13 @@ public class UIManager : MonoBehaviour
     public void UpdateCastleHPTxt(int value, int maxVal) => _castleTMP.text = $"Castle HP: {value}/{maxVal}";
     #endregion
 
+    [Header("Player Behavior")]
+    [SerializeField] private GameObject _playerActionSelectorObj;
 
+    #region Method
+    public void ActivePlayerActionSelector() => _playerActionSelectorObj.SetActive(true);
+    public void DisabledPlayerActionSelector() => _playerActionSelectorObj.SetActive(false);
+    #endregion
     [Header("Crack/Monster Info")]
     [SerializeField] private TextMeshProUGUI _next;
 
@@ -59,17 +65,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _synergyTxt;
     #region Method
     
-    
-
-    #endregion
-    
-    [Header("Research Panel")]
-    [SerializeField] private GameObject _researchPanelObj;
-    #region Method
-    public void ActiveResearchPanel()
-    {
-        _researchPanelObj.SetActive(true);
-    }
     
 
     #endregion

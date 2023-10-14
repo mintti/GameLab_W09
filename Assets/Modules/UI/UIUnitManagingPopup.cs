@@ -22,7 +22,7 @@ public class UIUnitManagingPopup : MonoBehaviour
     
     public void B_ActivePanel()
     {
-        UITile tile = null; // [TODO] 현재 서 있는 위치 정보 로드 필요
+        UITile tile = GameManager.I.CurOnTile; // [TODO] 현재 서 있는 위치 정보 로드 필요
         _curTile = tile;
         gameObject.SetActive(true);
         
@@ -47,12 +47,35 @@ public class UIUnitManagingPopup : MonoBehaviour
         {
             _curTile.ChangeClass(type);
         }
+
+        EndEvent();
     }
 
-    public void B_Upgrade() => _curTile.Upgrade();
-    public void B_Destory() => _curTile.Destroy();
+    public void B_Upgrade()
+    {
+        _curTile.Upgrade();
+        EndEvent();
+    }
+
+    public void B_Destory()
+    {
+        _curTile.Destroy();
+        EndEvent();
+    }
 
 
+    /// <summary>
+    /// 플레이어의 행동을 완료 후 종료
+    /// </summary>
+    private void EndEvent()
+    {
+        B_Close();
+        GameManager.I.Next();
+    }
+
+    /// <summary>
+    /// 패널을 종료
+    /// </summary>
     public void B_Close()
     {
         _curTile = null;

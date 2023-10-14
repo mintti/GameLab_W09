@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using DG.Tweening;
 using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
         set => _castleHp = value;
     }
 
+    [SerializeField] private Ease _moveEase;
+    
     public ObservableCollection<IUnit> UnitCollection { get; set; }
 
 
@@ -28,5 +31,13 @@ public class PlayerController : MonoBehaviour
         UnitCollection.CollectionChanged += (sender, e)=>
         {
         };
+    }
+
+
+    public void Move(Vector3 targetPos)
+    {
+        transform.DOMove(targetPos, 1)
+            .SetEase(_moveEase)
+            .OnComplete(() => GameManager.I.Next());
     }
 }
