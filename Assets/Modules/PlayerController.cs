@@ -5,21 +5,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private int _enigma;
-
-    public int Enigma
-    {
-        get => _enigma;
-        set => _enigma = value;
-    }
-    
-    private int _castleHp;
-    public int CastleHp
-    {
-        get => _castleHp;
-        set => _castleHp = value;
-    }
-
     [SerializeField] private Ease _moveEase;
     
     public ObservableCollection<IUnit> UnitCollection { get; set; }

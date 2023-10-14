@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Numerics;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -17,8 +19,13 @@ public class BoardManager : MonoBehaviour
     [Header("Tile Related")]
     [SerializeField] private Transform _tilesTr;
     [SerializeField] private GameObject _tilePrefab;
-    private ObservableCollection<UITile> Tiles { get; set; }
-    public IEnumerable<IUnit> SortedOnUnitTiles => Tiles.Where(x=> x.OnUnit != null).OrderBy(x => x.Index).Select(x=> x.OnUnit);
+    private ObservableCollection<ITile> Tiles { get; set; }
+
+    public IEnumerable<IUnit> SortedOnUnitTiles =>
+        Tiles.Where(x=> x is UICommonTile)
+            .Select(x=> (x as MonoBehaviour).GetComponent<UICommonTile>())
+            .Where(x=> x.OnUnit != null).OrderBy(x => x.Index).Select(x=> x.OnUnit);   
+    
     
     
     /// <summary>
@@ -26,7 +33,7 @@ public class BoardManager : MonoBehaviour
     /// </summary>
     private int _boardLineCount = 3;
     
-    public UITile PlayerOnTile { get; private set; }
+    public ITile PlayerOnTile { get; private set; }
     private int PlayerOnTileIdx => PlayerOnTile.Index;
     
     public void Init()
@@ -44,12 +51,35 @@ public class BoardManager : MonoBehaviour
         // [TODO] 타일을 생성해내어야함
         for (int i = 0, cnt = _tilesTr.childCount; i < cnt; i++)
         {
-            var tile = _tilesTr.GetChild(i).GetComponent<UITile>();
+            var tr = _tilesTr.GetChild(i);
+            tr.gameObject.AddComponent(GetTileType(i));
+            var tile = _tilesTr.GetChild(i).GetComponent<ITile>();
             tile.Index = i;
             Tiles.Add(tile);
         }
 
         PlayerOnTile = Tiles[0];
+    }
+
+    private Type GetTileType(int index)
+    {
+        Type result;
+        if (index % _boardLineCount == 0)
+        {
+            result = (index / _boardLineCount) switch
+            {
+                0 => typeof(UIStartTile),
+                1 => typeof(UITrapTile),
+                2 => typeof(UIRestTile),
+                3 => typeof(UIPortalTile),
+            };
+        }
+        else
+        {
+            result = typeof(UICommonTile);
+        }
+
+        return result;
     }
 
     public void InitTile(int tileCntByLine)
@@ -94,7 +124,7 @@ public class BoardManager : MonoBehaviour
     /// </summary>
     /// <param name="changeCurTile">플레이어가 존재하는 타일 정보를 업데이트 합니다</param>
     /// <returns></returns>
-    public UITile GetNextTile(bool changeCurTile)
+    public ITile GetNextTile(bool changeCurTile)
     {
         int index = (PlayerOnTileIdx + 1) % Tiles.Count;
         var tile = Tiles[index];

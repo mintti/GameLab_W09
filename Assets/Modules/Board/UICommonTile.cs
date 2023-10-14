@@ -1,13 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UITile : MonoBehaviour
+public class UICommonTile : MonoBehaviour, ITile
 {
-    [SerializeField] private int _index; 
+    [SerializeField] private int _index;
+
+    #region ITile
     /// <summary>
     /// 타일 인덱스
     /// </summary>
     public int Index { get => _index; set => _index = value; }
+    
+    public TileType Type { get; set; }
+    
+    public void OnEvent()
+    {
+        UIManager.I.ActivePlayerActionSelector(); 
+    }
+    
+    public void ExitEvent()
+    {
+        UIManager.I.DisabledPlayerActionSelector();
+    }
+
+    public void PassEvent()
+    {
+        
+    }
+    #endregion
     
     public IUnit OnUnit { get; set; }
 

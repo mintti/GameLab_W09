@@ -22,25 +22,25 @@ public class UIUnitManagingPopup : MonoBehaviour
 
     [Header("Info")]
     [SerializeField] private State _popupState;
-    [SerializeField] private UITile _curTile;
+    [FormerlySerializedAs("_curTile")] [SerializeField] private UICommonTile curCommonTile;
     
     public void B_ActivePanel()
     {
-        UITile tile = GameManager.I.CurOnTile; // [TODO] 현재 서 있는 위치 정보 로드 필요
-        _curTile = tile;
+        var commonTile = (GameManager.I.CurOnCommonTile as MonoBehaviour).GetComponent<UICommonTile>();
+        curCommonTile = commonTile;
         gameObject.SetActive(true);
         
-        if (tile.OnUnit == null)
+        if (commonTile.OnUnit == null)
         {
             _emptyTileObj.SetActive(true);
         }
         else
         {
             _onUnitTileObj.SetActive(true);
-            _upgradeBtn.interactable = _curTile.OnUnit.Level < UnitLevel.Three;
+            _upgradeBtn.interactable = curCommonTile.OnUnit.Level < UnitLevel.Three;
         }
 
-        _popupState = tile.OnUnit == null ? State.Empoly : State.Change;
+        _popupState = commonTile.OnUnit == null ? State.Empoly : State.Change;
     }
 
     public void B_SelectClass(int typeIdx)
@@ -51,7 +51,7 @@ public class UIUnitManagingPopup : MonoBehaviour
         {
             if (GameManager.I.CheckCost(GamePassive.I.EmpolyCost))
             {
-                _curTile.Employ(type);
+                curCommonTile.Employ(type);
                 result = true;
             }
         }
@@ -59,7 +59,7 @@ public class UIUnitManagingPopup : MonoBehaviour
         {
             if (GameManager.I.CheckCost(GamePassive.I.ChangeCost))
             {
-                _curTile.ChangeClass(type);
+                curCommonTile.ChangeClass(type);
                 result = true;
             }
         }
@@ -74,14 +74,14 @@ public class UIUnitManagingPopup : MonoBehaviour
     {
         if (GameManager.I.CheckCost(GamePassive.I.UpgradeCost))
         {
-            _curTile.Upgrade();
+            curCommonTile.Upgrade();
             EndEvent();
         }
     }
 
     public void B_Destory()
     {
-        _curTile.Destroy();
+        curCommonTile.Destroy();
         EndEvent();
     }
     
@@ -99,7 +99,7 @@ public class UIUnitManagingPopup : MonoBehaviour
     /// </summary>
     public void B_Close()
     {
-        _curTile = null;
+        curCommonTile = null;
         _emptyTileObj.SetActive(false);
         _onUnitTileObj.SetActive(false);
         _selectClassContentTileObj.SetActive(false);

@@ -58,8 +58,12 @@ public class GamePassive :  MonoBehaviour
     private int _managerCnt;
     private int _treasureHunterCnt;
     private int _bardCnt;
-    
-    
+
+
+    [Header("Default Info")]
+    public int StartAnigma;
+    public int StartCastleHP;
+
     [Header("Cost")]
     [SerializeField] private int _empolyCost;
     public int EmpolyCost => _empolyCost;
@@ -67,5 +71,10 @@ public class GamePassive :  MonoBehaviour
     public int UpgradeCost => _upgradeCost;
     [SerializeField] private int _changeClassCost;
     public int ChangeCost => _changeClassCost;
+    
+    
+    [Header("Tile Info")]
+    [SerializeField] private int _startPassGetAnigma;
+    public int StartPassGetAnigma => _startPassGetAnigma;
 
 }

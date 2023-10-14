@@ -37,9 +37,41 @@ public class GameManager : MonoBehaviour
 
     public string CurEnvName => _crackManager.ConnectedEnv.GetType().Name;
     public PlayerController PlayerController => _playerController;
-    public UITile CurOnTile => _boardManager.PlayerOnTile;
+    public ITile CurOnCommonTile => _boardManager.PlayerOnTile;
 
     public BoardManager BoardManager => _boardManager;
+
+    #endregion
+
+    #region Player
+
+    private int _anigma;
+    public int Anigma
+    {
+        get => _anigma;
+        set
+        {
+            _anigma = value;
+            UIManager.I.UpdateAnigmaTxt(_anigma);
+        }
+    }
+
+    private int _castleMaxHP;
+    private int _castleHp;
+    public int CastleHp
+    {
+        get => _castleHp;
+        set
+        {
+            _castleHp = Math.Min(0, Math.Min(value, _castleMaxHP));   
+            UIManager.I.UpdateCastleHPTxt(_castleHp, _castleMaxHP);
+
+            if (_castleHp == 0)
+            {
+                GameOver("성 체력이 0이 됨");
+            }
+        }
+    }
 
     #endregion
     
@@ -48,14 +80,17 @@ public class GameManager : MonoBehaviour
         // Init Data
         _crackManager.Init(ResourceManager.I.Envs[(int) EnvType.SlimeForest]);
         _boardManager.Init();
+
+        Anigma = GamePassive.I.StartAnigma;
+        _castleMaxHP = CastleHp = GamePassive.I.StartCastleHP;
         
-        // 
+        // 게임 시작
         StartCoroutine(GameFlow());
     }
 
     IEnumerator GameFlow()
     {
-        Debug.Log("게임 시작");
+        Log("게임 시작");
         
         _gameEnd = false;
         do
@@ -97,7 +132,7 @@ public class GameManager : MonoBehaviour
     #endregion
     IEnumerator RollDice()
     {
-        Debug.Log("주사위 눈금을 입력해주세요.");
+        Log("주사위 눈금을 입력해주세요.");
         // 주사위를 굴린다.
         
         yield return WaitNext(); // 값을 얻을 때까지 대기
@@ -107,28 +142,25 @@ public class GameManager : MonoBehaviour
         // 하나의 애니메이션을 반복한다.
         for (int i = 0; i < _diceVal; i++)
         {
-            var targetPos = _boardManager.GetNextTile(true).transform.position;
+            var targetPos = (_boardManager.GetNextTile(true) as MonoBehaviour).transform.position;
             _playerController.Move(targetPos);
             yield return WaitNext();
+
+            // 지나가는 타일에 대한 이벤트 수행 (도달하는 타일 포함)
+            _boardManager.PlayerOnTile.PassEvent();
         }
         
         // 최종 이동한 타일에서 플레이어의 행동 대기
-        UIManager.I.ActivePlayerActionSelector();
+        _boardManager.PlayerOnTile.OnEvent();
         yield return WaitNext();
-        
-        UIManager.I.DisabledPlayerActionSelector();
-    }
-
-    private void MovePlayer()
-    {
-        
+        _boardManager.PlayerOnTile.ExitEvent();
     }
     
     IEnumerator BattleEvent()
     {
         if (_curEnemy != null)
         {
-            Debug.Log("적이 존재하여 전투 시작");
+            Log("적이 존재하여 전투 시작");
             // 전투 용병 체크 후 공격
             var battleUnits = _boardManager.SortedOnUnitTiles.Where(x => x.HasType.Contains(UnitType.Battle));
             if (battleUnits.Count() > 0)
@@ -161,7 +193,7 @@ public class GameManager : MonoBehaviour
         // 몬스터가 존재하지 않을 때, 크랙 이벤트 수행
         if (_curEnemy == null)
         {
-            Debug.Log("균열 내 몬스터가 미존해야하여 균열 행동");
+            Log("균열 내 몬스터가 미존해야하여 균열 행동");
             _curEnemy = _crackManager.Execute();
         }
 
@@ -171,7 +203,13 @@ public class GameManager : MonoBehaviour
     public void GameClear(string reason)
     {
         StopCoroutine(GameFlow());
-        Debug.Log($"게임 클리어: {reason}");
+        Log($"게임 클리어: {reason}");
+    }
+    
+    private void GameOver(string reason)
+    {
+        StopCoroutine(GameFlow());
+        Log($"게임 오버: {reason}");
     }
 
     #region Other
@@ -205,10 +243,15 @@ public class GameManager : MonoBehaviour
     {
         return false;
     }
+
+    public void Log(string log)
+    {
+        Debug.Log(log);
+    }
     #endregion
 
     public bool CheckCost(int expense)
     {
-        return expense <= _playerController.Enigma;
+        return expense <= Anigma;
     }
 }
