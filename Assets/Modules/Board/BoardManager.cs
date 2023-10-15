@@ -7,6 +7,7 @@ using System.Numerics;
 using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Vector3 = UnityEngine.Vector3;
 
 public class BoardManager : MonoBehaviour
@@ -19,12 +20,14 @@ public class BoardManager : MonoBehaviour
     [Header("Tile Related")]
     [SerializeField] private Transform _tilesTr;
     [SerializeField] private GameObject _tilePrefab;
-    private ObservableCollection<ITile> Tiles { get; set; }
+    private ObservableCollection<BaseTile> Tiles { get; set; }
 
     public IEnumerable<IUnit> SortedOnUnitTiles =>
         Tiles.Where(x=> x is UICommonTile)
-            .Select(x=> (x as MonoBehaviour).GetComponent<UICommonTile>())
-            .Where(x=> x.OnUnit != null).OrderBy(x => x.Index).Select(x=> x.OnUnit);   
+            .Select(x=> x.GetComponent<UICommonTile>())
+            .Where(x=> x.OnUnit != null)
+            .OrderBy(x => x.Index)
+            .Select(x=> x.OnUnit);
     
     
     
@@ -33,7 +36,7 @@ public class BoardManager : MonoBehaviour
     /// </summary>
     private int _boardLineCount = 3;
     
-    public ITile PlayerOnTile { get; private set; }
+    public BaseTile PlayerOnTile { get; private set; }
     private int PlayerOnTileIdx => PlayerOnTile.Index;
     
     public void Init()
@@ -53,7 +56,7 @@ public class BoardManager : MonoBehaviour
         {
             var tr = _tilesTr.GetChild(i);
             tr.gameObject.AddComponent(GetTileType(i));
-            var tile = _tilesTr.GetChild(i).GetComponent<ITile>();
+            var tile = _tilesTr.GetChild(i).GetComponent<BaseTile>();
             tile.Index = i;
             Tiles.Add(tile);
         }
@@ -124,7 +127,7 @@ public class BoardManager : MonoBehaviour
     /// </summary>
     /// <param name="changeCurTile">플레이어가 존재하는 타일 정보를 업데이트 합니다</param>
     /// <returns></returns>
-    public ITile GetNextTile(bool changeCurTile)
+    public BaseTile GetNextTile(bool changeCurTile)
     {
         int index = (PlayerOnTileIdx + 1) % Tiles.Count;
         var tile = Tiles[index];

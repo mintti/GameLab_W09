@@ -1,9 +1,11 @@
-public interface ITile
+using System.Collections;
+
+public interface ITile2
 {
     int Index { get; set; }
     TileType Type { get; set; }
     
-    void OnEvent();
+    IEnumerator OnEvent();
     void ExitEvent();
     void PassEvent();
 }

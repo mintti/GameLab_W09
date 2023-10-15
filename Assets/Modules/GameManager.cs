@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     public string CurEnvName => _crackManager.ConnectedEnv.GetType().Name;
     public PlayerController PlayerController => _playerController;
-    public ITile CurOnCommonTile => _boardManager.PlayerOnTile;
+    public BaseTile CurOnCommonTile => _boardManager.PlayerOnTile;
 
     public BoardManager BoardManager => _boardManager;
 
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         get => _castleHp;
         set
         {
-            _castleHp = Math.Min(0, Math.Min(value, _castleMaxHP));   
+            _castleHp = Math.Max(0, Math.Min(value, _castleMaxHP));   
             UIManager.I.UpdateCastleHPTxt(_castleHp, _castleMaxHP);
 
             if (_castleHp == 0)
@@ -83,7 +83,8 @@ public class GameManager : MonoBehaviour
         _boardManager.Init();
 
         Anigma = GamePassive.I.StartAnigma;
-        _castleMaxHP = CastleHp = GamePassive.I.StartCastleHP;
+        _castleMaxHP = GamePassive.I.StartCastleHP;
+        CastleHp = _castleMaxHP;
         
         // 게임 시작
         StartCoroutine(GameFlow());
@@ -151,8 +152,7 @@ public class GameManager : MonoBehaviour
         }
         
         // 최종 이동한 타일에서 플레이어의 행동 대기
-        _boardManager.PlayerOnTile.OnEvent();
-        yield return WaitNext();
+        yield return _boardManager.PlayerOnTile.OnEvent();
         _boardManager.PlayerOnTile.ExitEvent();
     }
     
@@ -175,7 +175,8 @@ public class GameManager : MonoBehaviour
             }
             
             // 모든 공격을 끝마치면....
-            yield return WaitNext();
+            yield return new WaitForSeconds(1f);
+            // yield return WaitNext();
             
             if (_curEnemy != null) 
             {
@@ -183,6 +184,7 @@ public class GameManager : MonoBehaviour
                 if (_curEnemy?.HP > 0)
                 {
                     yield return _curEnemy.Execute();
+                    yield return new WaitForSeconds(1f);
                 }
             }
         }
