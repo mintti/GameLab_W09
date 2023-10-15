@@ -20,7 +20,7 @@ public class BoardManager : MonoBehaviour
     [Header("Tile Related")]
     [SerializeField] private Transform _tilesTr;
     [SerializeField] private GameObject _tilePrefab;
-    private ObservableCollection<BaseTile> Tiles { get; set; }
+    public ObservableCollection<BaseTile> Tiles { get; private set; }
 
     public IEnumerable<IUnit> SortedOnUnitTiles =>
         Tiles.Where(x=> x is UICommonTile)
@@ -38,6 +38,10 @@ public class BoardManager : MonoBehaviour
     
     public BaseTile PlayerOnTile { get; private set; }
     private int PlayerOnTileIdx => PlayerOnTile.Index;
+    public BaseTile ClickTile { get; set; }
+
+    [SerializeField] private GameObject _enemyObject;
+    public Vector3 EnemyPosition => _enemyObject.transform.position;
     
     public void Init()
     {

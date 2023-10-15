@@ -8,7 +8,10 @@ public abstract class BaseTile : MonoBehaviour
     {
         yield return null;
     }
-
+    
+    /// <summary>
+    /// OnEvent 수행 수, 실행되는 이벤트
+    /// </summary>
     public virtual void ExitEvent()
     {
         
@@ -17,5 +20,10 @@ public abstract class BaseTile : MonoBehaviour
     public virtual void PassEvent()
     {
         
+    }
+
+    private void OnMouseUp()
+    {
+        GameManager.I.BoardManager.ClickTile = this;
     }
 }

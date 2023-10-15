@@ -459,6 +459,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sofa
       objectReference: {fileID: 0}
+    - target: {fileID: 4779967501118347253, guid: b0fbd4717a1b1f14492dcb3aac7edc8f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0fbd4717a1b1f14492dcb3aac7edc8f, type: 3}
 --- !u!4 &65563803 stripped
@@ -1529,6 +1533,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1876799847}
     m_Modifications:
+    - target: {fileID: 758661008286452002, guid: fe3dc0b59b3b43e4a8e3c6da35233241, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3944813387954839300, guid: fe3dc0b59b3b43e4a8e3c6da35233241, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3249,6 +3257,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1876799847}
     m_Modifications:
+    - target: {fileID: 3947480984702351868, guid: 63e01af1018de16488e9b90e6c44f019, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866884930449477335, guid: 63e01af1018de16488e9b90e6c44f019, type: 3}
       propertyPath: m_Name
       value: Teapot
@@ -9739,6 +9751,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1876799847}
     m_Modifications:
+    - target: {fileID: 175414260855174104, guid: 3435fde1517dd694599a739d12c05259, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1697537140503600903, guid: 3435fde1517dd694599a739d12c05259, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -10592,6 +10608,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1876799847}
     m_Modifications:
+    - target: {fileID: 758661008286452002, guid: fe3dc0b59b3b43e4a8e3c6da35233241, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3944813387954839300, guid: fe3dc0b59b3b43e4a8e3c6da35233241, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -12301,6 +12321,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 530666195}
     m_Modifications:
+    - target: {fileID: 5882684388417882725, guid: 89ff398cfa894d446873dbb969c754bb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7368335656448155340, guid: 89ff398cfa894d446873dbb969c754bb, type: 3}
       propertyPath: m_Name
       value: Coffee_table_2

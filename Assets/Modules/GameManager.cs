@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Player
-
+    public bool PlayerOnCagel { get; set; }
+    
     private int _anigma;
     public int Anigma
     {
@@ -134,14 +135,27 @@ public class GameManager : MonoBehaviour
     #endregion
     IEnumerator RollDice()
     {
-        // 주사위를 굴린다.
-        _dice.Active();
-        yield return WaitNext(); // 값을 얻을 때까지 대기
+        if (!PlayerOnCagel)
+        {
+            // 주사위를 굴린다.
+            _dice.Active();
+            yield return WaitNext(); // 값을 얻을 때까지 대기
 
+            yield return PlayerMove(_diceVal);
+        }
+        else
+        {
+            PlayerOnCagel = false;
+            Log("덫에서 빠져나왔습니다. 이동할 힘이 없습니다.");
+        }
+    }
+
+    public IEnumerator PlayerMove(int value)
+    {
         // 플레이어 이동
         // 보드를 이동할 땐, 한 칸 한 칸 이동한다.
         // 하나의 애니메이션을 반복한다.
-        for (int i = 0; i < _diceVal; i++)
+        for (int i = 0; i < value; i++)
         {
             var targetPos = (_boardManager.GetNextTile(true) as MonoBehaviour).transform.position;
             _playerController.Move(targetPos);

@@ -5,9 +5,9 @@ public class UIRestTile : BaseTile
 {
     public override IEnumerator OnEvent()
     {
-        // [TODO] 손님 이벤트
+        GameManager.I.Log("(접객실은 비어있다.)");
         GameManager.I.Next();
-        yield return null;
+        yield return new WaitForSeconds(.5f);
     }
     
     public override void PassEvent()
