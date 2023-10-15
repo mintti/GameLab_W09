@@ -21,6 +21,7 @@ public class BaseUnit : IUnit
             _classType = value;
             UIUnit.ChangedClassType(_classType);
             GameManager.I.CalculateSynergy();
+            UpdateStatus();
         }
     }
     
@@ -34,6 +35,7 @@ public class BaseUnit : IUnit
             {
                 _level = value;
                 UIUnit.ChangedLevel(_level);
+                UpdateStatus();
             }
         }
     }
