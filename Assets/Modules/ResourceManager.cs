@@ -25,6 +25,9 @@ public class ResourceManager : MonoBehaviour
     
     private List<Material> _classColorMaterial;
     public List<Material> ClassColorMaterial => _classColorMaterial;
+    
+    [SerializeField]private Material _defaultTileColorMaterial;
+    public Material DefaultTileColorMaterial => _defaultTileColorMaterial;
 
     [SerializeField] private GameObject _unitPrefab;
     public GameObject UnitPrefab => _unitPrefab;
