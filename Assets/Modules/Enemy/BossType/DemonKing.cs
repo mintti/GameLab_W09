@@ -11,7 +11,7 @@ public class DemonKing : BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
-        
+        Attack(50);
     }
 
 }

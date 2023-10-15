@@ -10,5 +10,6 @@ public class SteelSlime : BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
+        Attack(5);
     }
 }

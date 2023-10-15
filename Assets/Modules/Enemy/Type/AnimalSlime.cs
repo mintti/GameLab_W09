@@ -10,6 +10,7 @@ public class AnimalSlime : BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
+        Attack(5);
     }
 
 }

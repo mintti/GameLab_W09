@@ -11,7 +11,7 @@ public class SlimeKing : BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
-        
+        Attack(20);
     }
 
 }

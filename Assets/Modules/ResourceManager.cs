@@ -75,12 +75,12 @@ public class ResourceManager : MonoBehaviour
     {
         return type switch
         {
-            EnemyType.Slime => new Slime(nameof(Slime), 5, 2),
-            EnemyType.AnimalSlime => new AnimalSlime(nameof(AnimalSlime), 5, 2),
-            EnemyType.SteelSlime => new SteelSlime(nameof(SteelSlime), 5, 2),
-            EnemyType.SmallDemon => new SmallDemon(nameof(SmallDemon), 5, 2),
-            EnemyType.MediumDemon => new MediumDemon(nameof(MediumDemon), 5, 2),
-            EnemyType.LargeDemon => new LargeDemon(nameof(LargeDemon), 5, 2),
+            EnemyType.Slime => new Slime(nameof(Slime), 10, 2),
+            EnemyType.AnimalSlime => new AnimalSlime(nameof(AnimalSlime), 15, 1),
+            EnemyType.SteelSlime => new SteelSlime(nameof(SteelSlime), 30, 2),
+            EnemyType.SmallDemon => new SmallDemon(nameof(SmallDemon), 20, 1),
+            EnemyType.MediumDemon => new MediumDemon(nameof(MediumDemon), 35, 1),
+            EnemyType.LargeDemon => new LargeDemon(nameof(LargeDemon), 50, 2),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
@@ -89,8 +89,8 @@ public class ResourceManager : MonoBehaviour
     {
         return type switch
         {
-            BossType.SlimeKing => new SlimeKing(nameof(SlimeKing), 10, 3),
-            BossType.DemonKing => new DemonKing(nameof(DemonKing), 10, 3),
+            BossType.SlimeKing => new SlimeKing(nameof(SlimeKing), 50, 3),
+            BossType.DemonKing => new DemonKing(nameof(DemonKing), 200, 2),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

@@ -10,6 +10,7 @@ public class LargeDemon : BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
+        Attack(10);
     }
 
 }

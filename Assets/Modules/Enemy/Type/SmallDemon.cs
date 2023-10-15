@@ -10,6 +10,7 @@ public class SmallDemon : BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
+        Attack(10);
     }
 
 }

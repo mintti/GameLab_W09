@@ -10,5 +10,6 @@ public class MediumDemon: BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
+        Attack(10);
     }
 }

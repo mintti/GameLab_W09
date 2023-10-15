@@ -12,6 +12,6 @@ public class Slime : BaseEnemy
 
     protected override void ExecuteAfterAdapt()
     {
-        
+        Attack(5);
     }
 }
