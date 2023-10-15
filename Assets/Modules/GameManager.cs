@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     
     [Header("Game Flow Variable")]
     private bool _gameEnd;
-    private IEnemy _curEnemy;
+    private BaseEnemy _curEnemy;
 
     #region Singleton
     public static GameManager I { get; private set; }

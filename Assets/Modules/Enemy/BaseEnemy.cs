@@ -7,7 +7,10 @@ public abstract class BaseEnemy : IEnemy
     public BaseEnemy(string name, int hp, int adaptCnt)
     {
         Name = name;
-        HP = hp;
+        
+        _maxHP = hp;
+        _hp = hp;
+        
         _adaptCount = adaptCnt;
 
         string path = $"{CommonConst.EnemySpritePath}/{GameManager.I.CurEnvName}/{name}";
@@ -18,13 +21,15 @@ public abstract class BaseEnemy : IEnemy
     #region IEnemy
     
     public string Name { get; }
-    
+
+    private int _maxHP;
     public int HP
     {
         get => _hp;
         set
         {
-            _hp = Math.Max(0, value);
+            _hp = Math.Max(0, Math.Min(value, _maxHP));
+            UIInfo.UpdateHP(_hp, _maxHP);
             if (_hp == 0)
             {
                 GameManager.I.KillMonster();
@@ -89,8 +94,21 @@ public abstract class BaseEnemy : IEnemy
     {
         _displaySpriteRenderer.sprite = null;
         _displaySpriteRenderer = null;
+        _uiInfo.Disable();
+        _uiInfo = null;
     }
     #endregion
+
+    private UIEnemyInfo _uiInfo; 
+    public UIEnemyInfo UIInfo
+    {
+        private get => _uiInfo;
+        set
+        {
+            _uiInfo = value;
+            _uiInfo.Active(Name, _maxHP);
+        }
+    }
     
     private int _hp;
     private bool _isAdapt;

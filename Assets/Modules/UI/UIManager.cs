@@ -54,7 +54,8 @@ public class UIManager : MonoBehaviour
     #endregion
     [Header("Crack/Monster Info")]
     [SerializeField] private TextMeshProUGUI _next;
-
+    [SerializeField] private UIEnemyInfo _enemyInfo;
+    public UIEnemyInfo EnemyInfo => _enemyInfo;
     #region Method
 
     

@@ -30,9 +30,9 @@ public class CrackManager : MonoBehaviour
     /// <summary>
     /// 현재 몬스터가 생성되지 않은 상태이면 게임 매니저에서 호출된다
     /// </summary>
-    public IEnemy Execute()
+    public BaseEnemy Execute()
     {
-        IEnemy enemy = null;
+        BaseEnemy enemy = null;
         // [TODO] 보스 몹 잡은 이후, 봉쇄하도록 설정 필요
         _emptyCount++;
 
@@ -45,9 +45,9 @@ public class CrackManager : MonoBehaviour
         return enemy;
     }
     
-    private IEnemy SpawnEnemy()
+    private BaseEnemy SpawnEnemy()
     {
-        IEnemy enemy = null;
+        BaseEnemy enemy = null;
         if (_enemyIdx <= ConnectedEnv.EnemyTypeList.Count)
         {
             if (_enemyIdx < ConnectedEnv.EnemyTypeList.Count)
@@ -63,6 +63,7 @@ public class CrackManager : MonoBehaviour
             _enemyIdx ++;
             Debug.Log($"{enemy.Name} 출현! ");
             enemy.DisplaySpriteRenderer = enemySpriteRenderer; // 이미지 출력 연결
+            enemy.UIInfo = UIManager.I.EnemyInfo;
         }
 
         return enemy;

@@ -68,7 +68,7 @@ public class ResourceManager : MonoBehaviour
     }
     #endregion
     
-    public IEnemy GetEnemy(EnemyType type)
+    public BaseEnemy GetEnemy(EnemyType type)
     {
         return type switch
         {
@@ -82,7 +82,7 @@ public class ResourceManager : MonoBehaviour
         };
     }
 
-    public IEnemy GetBoss(BossType type)
+    public BaseEnemy GetBoss(BossType type)
     {
         return type switch
         {
