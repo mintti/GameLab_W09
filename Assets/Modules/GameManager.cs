@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GameFlow()
     {
-        Log("게임 시작");
+        Debug.Log("게임 시작");
         
         _gameEnd = false;
         do
@@ -146,7 +146,8 @@ public class GameManager : MonoBehaviour
         else
         {
             PlayerOnCagel = false;
-            Log("덫에서 빠져나왔습니다. 이동할 힘이 없습니다.");
+            Log("덫에서 빠져나왔습니다. 이동할 힘이 없습니다.", 1.5f);
+            yield return new WaitForSeconds(1.5f);
         }
     }
 
@@ -174,11 +175,12 @@ public class GameManager : MonoBehaviour
     {
         if (_curEnemy != null)
         {
-            Log("적이 존재하여 전투 시작");
+            Debug.Log("적이 존재하여 전투 시작");
             // 전투 용병 체크 후 공격
             var battleUnits = _boardManager.SortedOnUnitTiles.Where(x => x.HasType.Contains(UnitType.Battle));
             if (battleUnits.Count() > 0)
             {
+                Log("유닛들이 적을 공격합니다.");
                 foreach (var unit in battleUnits)
                 {
                     unit.BattleAction(_curEnemy);
@@ -198,7 +200,6 @@ public class GameManager : MonoBehaviour
                 if (_curEnemy?.HP > 0)
                 {
                     yield return _curEnemy.Execute();
-                    yield return new WaitForSeconds(1f);
                 }
             }
         }
@@ -209,7 +210,7 @@ public class GameManager : MonoBehaviour
         // 몬스터가 존재하지 않을 때, 크랙 이벤트 수행
         if (_curEnemy == null)
         {
-            Log("균열 내 몬스터가 미존해야하여 균열 행동");
+            Debug.Log("균열 내 몬스터가 미존해야하여 균열 행동");
             _curEnemy = _crackManager.Execute();
         }
 
@@ -219,13 +220,13 @@ public class GameManager : MonoBehaviour
     public void GameClear(string reason)
     {
         StopCoroutine(GameFlow());
-        Log($"게임 클리어: {reason}");
+        Log($"게임 클리어: {reason}", 5);
     }
     
     private void GameOver(string reason)
     {
         StopCoroutine(GameFlow());
-        Log($"게임 오버: {reason}");
+        Log($"게임 오버: {reason}", 5);
     }
 
     #region Other
@@ -237,6 +238,7 @@ public class GameManager : MonoBehaviour
 
     public void KillMonster()
     {
+        Log($"유닛들이 {_curEnemy.Name}을 처치했습니다.", 1.5f);
         _curEnemy = null;
         _crackManager.CheckPurgeEnv();
     }
@@ -260,8 +262,9 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public void Log(string log)
+    public void Log(string log, float time = 1f)
     {
+        UIManager.I.OutputInfo(log, time);
         Debug.Log(log);
     }
     

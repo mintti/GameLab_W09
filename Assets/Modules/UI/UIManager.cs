@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UIManager : MonoBehaviour
 {
@@ -70,5 +71,41 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region Gmae Info 
+
+    public GameObject infoTextObj;
+    public TextMeshProUGUI infoTMP;
+    private Coroutine currentMessageCoroutine;
+
+    /// <summary>
+    /// 입력된 시간만큼 텍스트를 띄웁니다.
+    /// </summary>
+    public void OutputInfo(string text, float time = 1f)
+    {
+        if (currentMessageCoroutine != null)
+        {
+            StopCoroutine(currentMessageCoroutine); // Stop the previous coroutine
+        }
+
+        currentMessageCoroutine = StartCoroutine(Message(text, time - .1f));
+    }
+
+    IEnumerator Message(string text, float time)
+    {
+        var _timer = time;
+        
+        do
+        {
+            infoTextObj.SetActive(true);
+            infoTMP.text = text;
+            yield return new WaitForSeconds(0.1f);
+            _timer -= .1f;
+        } while (_timer > 0);
+        
+        
+        infoTextObj.SetActive(false);
+    }
+
+    #endregion
 
 }

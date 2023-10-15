@@ -70,15 +70,17 @@ public abstract class BaseEnemy : IEnemy
     {
         if (!_isAdapt)
         {
+            GameManager.I.Log($"적이 {_adaptCount - _turnCount}턴 후 적응합니다.", 1.5f);
             ExecuteBeforeAdapt();
             TurnCount++;
         }
         else
         {
+           GameManager.I.Log("적이 성을 공격합니다.", 1.5f);
             ExecuteAfterAdapt();
         }
 
-        yield return null;
+        yield return new WaitForSeconds(1.5f);
     }
     
     protected abstract void ExecuteBeforeAdapt();

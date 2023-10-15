@@ -94,7 +94,7 @@ public class CrackManager : MonoBehaviour
             var envsByLevel = ResourceManager.I.Envs.Where(x => x?.Level == nextLevel).ToList();
             IEnv nextEnv = envsByLevel[UnityEngine.Random.Range(0, envsByLevel.Count)];
         
-            Debug.Log($"새로운 지역으로 연결");
+            GameManager.I.Log($"모든 적을 처치하여 균열이 새로운 지역을 연결합니다.");
             
             // 현재 지역으로 지정
             Init(nextEnv);
