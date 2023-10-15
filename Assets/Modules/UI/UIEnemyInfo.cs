@@ -22,8 +22,8 @@ public class UIEnemyInfo : MonoBehaviour
     {
         _hpTMP.text = $"{hp}/{maxHp}";
         
-        _maxHPRect.sizeDelta = new Vector2(10 * maxHp, _maxHPRect.sizeDelta.y);
-        _curHPRect.sizeDelta = new Vector2((10 * hp) - 10, _curHPRect.sizeDelta.y);
+        _maxHPRect.sizeDelta = new Vector2(10 * maxHp + 10, _maxHPRect.sizeDelta.y);
+        _curHPRect.sizeDelta = new Vector2(10 * hp, _curHPRect.sizeDelta.y);
     }
 
     public void Disable()
